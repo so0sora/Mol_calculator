@@ -3,8 +3,9 @@ import atomDataJson from './atom.json';
 
 type AtomDataType = {
   [key: string]: {
-    symbol: string;
-    atomic_mass: number;
+    symbol: string; //영어 명
+    kor: string; //한글 명
+    atomic_mass: number; //원자량
   };
 };
 
@@ -106,7 +107,7 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
     <div style={{ marginTop: '16px', color: '#fff' }}>
       {parsedAtoms.map((atom, idx) => (
         <div key={idx}>
-          {atom.symbol} {atom.count}개 (원자량: {atomData[atom.symbol]?.atomic_mass ?? '-'})
+          {atom.symbol} {atom.count}개 ({atomData[atom.symbol]?.symbol ?? '-'} {atomData[atom.symbol]?.kor ?? '-'})
         </div>
       ))}
       <div style={{ marginTop: '12px', fontWeight: 'bold' }}>
