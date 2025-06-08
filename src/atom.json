@@ -1,0 +1,22 @@
+{
+  "H": { "symbol": "Hydrogen", "atomic_mass": 1 },
+  "He": { "symbol": "Helium", "atomic_mass": 4 },
+  "Li": { "symbol": "Lithium", "atomic_mass": 7 },
+  "Be": { "symbol": "Beryllium", "atomic_mass": 9 },
+  "B": { "symbol": "Boron", "atomic_mass": 11 },
+  "C": { "symbol": "Carbon", "atomic_mass": 12 },
+  "N": { "symbol": "Nitrogen", "atomic_mass": 14 },
+  "O": { "symbol": "Oxygen", "atomic_mass": 16 },
+  "F": { "symbol": "Fluorine", "atomic_mass": 19 },
+  "Ne": { "symbol": "Neon", "atomic_mass": 20 },
+  "Na": { "symbol": "Sodium", "atomic_mass": 23 },
+  "Mg": { "symbol": "Magnesium", "atomic_mass": 24 },
+  "Al": { "symbol": "Aluminium", "atomic_mass": 27 },
+  "Si": { "symbol": "Silicon", "atomic_mass": 28 },
+  "P": { "symbol": "Phosphorus", "atomic_mass": 31 },
+  "S": { "symbol": "Sulfur", "atomic_mass": 32 },
+  "Cl": { "symbol": "Chlorine", "atomic_mass": 35 },
+  "Ar": { "symbol": "Argon", "atomic_mass": 39 },
+  "K": { "symbol": "Potassium", "atomic_mass": 39 },
+  "Ca": { "symbol": "Calcium", "atomic_mass": 40 }
+}
