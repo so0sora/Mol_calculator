@@ -1,13 +1,18 @@
 {
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "name": "mol_calculator",
   "version": "0.1.0",
-  "homepage": "https://so0sora.github.io/mol_calculator",
-  "private": true,
-  "scripts": {
+  "homepage": "https://so0sora.github.io/mol_calculator/",
+  "script": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-
+  "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
