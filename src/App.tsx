@@ -106,6 +106,7 @@ function App() {
         <ul className="side-menu-list">
           <li>아직 미완성임.</li>
           <li>개발자: 최은우</li>
+          <li>도움을 주신 분: 송태영</li>
         </ul>
       </div>
 
@@ -139,7 +140,7 @@ function App() {
             <input
               type="text"
               className="text-input"
-              placeholder="계수, 단위 입력 (ex. 1 mol, 10 g)"
+              placeholder="값, 단위 입력 (ex. 1 mol or 10 g)"
               value={inputValue2}
               onChange={e => setInputValue2(e.target.value)}
             />

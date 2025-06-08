@@ -194,7 +194,7 @@
 
 .subscript-btn {
   padding: 10px 14px;
-  font-size: 16px;
+  font-size: 12px;
   border-radius: 6px;
   border: none;
   background: #7b8cff;
@@ -229,7 +229,7 @@
   background: #4a90e2;
   color: #fff;
   cursor: pointer;
-  margin-top: 8px;
+  margin-top: 50px;
   transition: background 0.2s;
 }
 
@@ -253,5 +253,6 @@
   margin-top: 0;
   width: 100%;
   min-height: 80px;
+  padding-bottom: 100px; /* 맨 아래 공백. 결과가 작업표시줄에 가리는 것을 방지*/
 }
 
