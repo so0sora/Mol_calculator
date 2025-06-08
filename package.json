@@ -1,4 +1,10 @@
 {
+  "homepage": "https://so0sora.github.io/mol_calculator/",
+  "scripts":{
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+
   "name": "mol_calculator",
   "version": "0.1.0",
   "private": true,
@@ -40,5 +46,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
