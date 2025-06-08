@@ -108,6 +108,16 @@ function App() {
           <li>개발자: 최은우</li>
           <li>도움을 주신 분: 송태영</li>
         </ul>
+        <div style={{
+          fontSize: '11px',
+          color: '#bbb',
+          textAlign: 'center',
+          marginTop: 'auto',
+          marginBottom: '12px'
+        }}>
+          v1.0.0<br />
+          2025-06-09
+        </div>
       </div>
 
       {/* 사이드 메뉴 블러 오버레이 */}
