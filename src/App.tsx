@@ -17,6 +17,7 @@ function App() {
   const [inputValue, setInputValue] = useState(''); /* inputValue는 입력받은 분자식/화학식*/
   const [inputValue2, setInputValue2] = useState(''); /* inputValue는 입력받은 계수와 단위위*/
   const [parsedAtoms, setParsedAtoms] = useState<{ symbol: string, count: number }[]>([]); // 결과 저장용
+  const [error, setError] = useState<string | null>(null); // 오류 메시지 상태 추가
 
   const handleMenuClick = () => {
     setSideMenuOpen(!sideMenuOpen);
@@ -28,6 +29,16 @@ function App() {
 
   // 변환 버튼 클릭 시 결과 저장
   const handleConvert = () => {
+    setError(null); // 이전 오류 초기화
+    // 분자식에서 원소 기호 추출 (아래첨자 포함)
+    const regex = /([A-Z][a-z]?)/g;
+    const symbols = inputValue.match(regex) || [];
+    const invalid = symbols.filter(sym => !atomData[sym]);
+    if (invalid.length > 0) {
+      setParsedAtoms([]);
+      setError(`지원하지 않는 원소 기호가 있습니다: ${invalid.join(', ')}`);
+      return;
+    }
     const result = Calculate.parseMolecule(inputValue);
     setParsedAtoms(result);
   };
@@ -73,7 +84,7 @@ function App() {
         </ul>
       </div>
 
-      {/* 블러 오버레이 */}
+      {/* 사이드 메뉴 블러 오버레이 */}
       {sideMenuOpen && (
         <div className="overlay" onClick={handleMenuClick}></div>
       )}
@@ -105,6 +116,12 @@ function App() {
             </svg>
              변환하기
           </button>
+          {/* 오류 메시지 출력 */}
+          {error && (
+            <div style={{ color: 'red', marginTop: '12px', fontWeight: 'bold' }}>
+              {error}
+            </div>
+          )}
           {/* 결과 출력 예시 */}
           {parsedAtoms.length > 0 && (
             <div style={{ marginTop: '16px', color: '#fff' }}>
@@ -113,7 +130,8 @@ function App() {
                   {atom.symbol} {atom.count}개 (원자량: {atomData[atom.symbol]?.atomic_mass ?? '-'})
                 </div>
               ))}
-              {/* 계산식 및 결과 출력 */}
+
+              {/* 분자량/화학식량 계산 식 및 결과 출력 */}
               <div style={{ marginTop: '12px', fontWeight: 'bold' }}>
                 분자량(화학식량):<br />
                 {/* 계산식 */}
