@@ -15,10 +15,10 @@ const atomData: AtomDataType = atomDataJson as AtomDataType;
 
 function App() {
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
-  const [inputValue, setInputValue] = useState(''); /* inputValue는 입력받은 분자식/화학식*/
-  const [inputValue2, setInputValue2] = useState(''); // 계수와 단위 입력값
-  const [parsedAtoms, setParsedAtoms] = useState<{ symbol: string, count: number }[]>([]); // 결과 저장용
-  const [error, setError] = useState<string | null>(null); // 오류 메시지 상태 추가
+  const [inputValue, setInputValue] = useState('');
+  const [inputValue2, setInputValue2] = useState('');
+  const [parsedAtoms, setParsedAtoms] = useState<{ symbol: string, count: number }[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const handleMenuClick = () => {
     setSideMenuOpen(!sideMenuOpen);
@@ -28,19 +28,16 @@ function App() {
     setInputValue(SubscriptConverter.toSubscriptLastChar(inputValue));
   };
 
-  // 변환 버튼 클릭 시 결과 저장
   const handleConvert = () => {
-    setError(null); // 이전 오류 초기화
+    setError(null);
 
-    // 단위 체크
-    const allowedUnits = ['mol', 'g', 'kg', 'L', 'g/mol', 'L/mol', 'NA']; //순서대로 몰, 분자량(화학식량), 
+    const allowedUnits = ['mol', 'g', 'kg', 'L', 'g/mol', 'L/mol', 'NA'];
     if (unit && !allowedUnits.includes(unit)) {
       setParsedAtoms([]);
       setError(`지원되지 않는 단위입니다: ${unit}`);
       return;
     }
 
-    // 분자식에서 원소 기호 추출 (아래첨자 포함)
     const regex = /([A-Z][a-z]?)/g;
     const symbols = inputValue.match(regex) || [];
     const invalid = symbols.filter(sym => !atomData[sym]);
@@ -49,13 +46,12 @@ function App() {
       setError(`지원하지 않는 원소 기호가 있습니다: ${invalid.join(', ')}`);
       return;
     }
+
     const result = Calculate.parseMolecule(inputValue);
     setParsedAtoms(result);
   };
 
-  // 계수와 단위를 분리하는 함수
   const parseAmountUnit = (value: string) => {
-    // 맨 앞에서 연속된 숫자(소수 포함)만 계수로, 나머지는 모두 단위로 처리
     const match = value.trim().match(/^(\d+(?:\.\d+)?)(.*)$/);
     if (match) {
       return {
@@ -71,9 +67,7 @@ function App() {
   return (
     <div className="App">
       {/* 최상단 헤더 */}
-
       <div className="header">
-        {/* 햄버거 버튼(사이드 메뉴 열기기) */}
         <button
           onClick={handleMenuClick}
           className="menu-btn"
@@ -83,10 +77,7 @@ function App() {
           <span className="bar" />
           <span className="bar" />
         </button>
-
-        <span className="header-title"> 
-          mol_calculator
-        </span>
+        <span className="header-title">mol_calculator</span>
       </div>
 
       {/* 사이드 메뉴 */}
@@ -104,7 +95,7 @@ function App() {
           </button>
         )}
         <ul className="side-menu-list">
-          <li>아직 미완성임.</li>
+          <li></li>
           <li>개발자: 최은우</li>
           <li>도움을 주신 분: 송태영</li>
         </ul>
@@ -137,16 +128,20 @@ function App() {
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
             />
-            
             <div style={{ display: 'flex', gap: 0, marginBottom: '8px' }}>
-              <button className="subscript-btn convert" onClick={() => setInputValue(SubscriptConverter.toSubscriptLastChar(inputValue))}>
+              <button
+                className="subscript-btn convert"
+                onClick={() => setInputValue(SubscriptConverter.toSubscriptLastChar(inputValue))}
+              >
                 아래 첨자로 변환하기
               </button>
-              <button className="subscript-btn all" onClick={() => setInputValue(SubscriptConverter.toSubscriptAll(inputValue))}>
+              <button
+                className="subscript-btn all"
+                onClick={() => setInputValue(SubscriptConverter.toSubscriptAll(inputValue))}
+              >
                 All
               </button>
             </div>
-
             <input
               type="text"
               className="text-input"
@@ -177,7 +172,6 @@ function App() {
           </div>
         </div>
       </div>
-      
     </div>
   );
 }

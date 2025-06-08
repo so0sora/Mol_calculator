@@ -14,7 +14,7 @@ interface ResultProps {
   parsedAtoms: { symbol: string; count: number }[];
   amount?: number | null;
   unit?: string;
-}
+}   
 
 const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
   if (!parsedAtoms || parsedAtoms.length === 0) return null;
