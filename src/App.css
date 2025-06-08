@@ -166,6 +166,14 @@
   align-items: center;
   margin-top: 40px; /* 원하는 만큼 값을 줄여 위로 올릴 수 있음 */
 }
+  
+.input-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+  width: 100%;
+}
 
 .text-input {
   width: 240px;
@@ -174,24 +182,42 @@
   border-radius: 6px;
   border: 1px solid #ccc;
   outline: none;
+  margin-bottom: 8px;
+}
+
+.subscript-btn-row {
+  display: flex;
+  gap: 0;
+  width: 240px;
+  margin-bottom: 8px;
 }
 
 .subscript-btn {
-  width: 150px;
   padding: 10px 14px;
-  font-size: 12px;
+  font-size: 16px;
   border-radius: 6px;
   border: none;
   background: #7b8cff;
   color: #fff;
   cursor: pointer;
   margin-top: 5px;
-  margin-bottom: 30px; /* 아래에 빈 공간 추가*/
+  margin-bottom: 10px;
   transition: background 0.2s;
 }
 
 .subscript-btn:hover {
   background: #5a6edc;
+}
+
+/* 아래 첨자로 변환하기 버튼: 180px, ALL 버튼: 60px (합 240px) */
+.subscript-btn.convert {
+  width: 180px;
+}
+
+.subscript-btn.all {
+  width: 60px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .convert-btn {
@@ -221,5 +247,11 @@
   background: rgba(0, 0, 0, 0.2);
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
+}
+
+.output-area {
+  margin-top: 0;
+  width: 100%;
+  min-height: 80px;
 }
 

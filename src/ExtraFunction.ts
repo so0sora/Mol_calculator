@@ -30,6 +30,12 @@ export class SubscriptConverter {
         '9': '₉'
     };
 
+    // 모든 숫자를 아래첨자로 변환
+    public static toSubscriptAll(input: string): string {
+        return input.replace(/[0-9]/g, (digit) => SubscriptConverter.subscriptDigits[digit]);
+    }
+
+    // 기존: 마지막 문자만 변환
     public static toSubscriptLastChar(input: string): string {
         if (input.length === 0) return input;
         const last = input[input.length - 1];
