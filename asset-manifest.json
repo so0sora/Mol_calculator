@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/mol_calculator/static/css/main.ce80efa4.css",
-    "main.js": "/mol_calculator/static/js/main.eb99d3ed.js",
+    "main.js": "/mol_calculator/static/js/main.bda360dc.js",
     "static/js/453.041b8c52.chunk.js": "/mol_calculator/static/js/453.041b8c52.chunk.js",
     "index.html": "/mol_calculator/index.html",
     "main.ce80efa4.css.map": "/mol_calculator/static/css/main.ce80efa4.css.map",
-    "main.eb99d3ed.js.map": "/mol_calculator/static/js/main.eb99d3ed.js.map",
+    "main.bda360dc.js.map": "/mol_calculator/static/js/main.bda360dc.js.map",
     "453.041b8c52.chunk.js.map": "/mol_calculator/static/js/453.041b8c52.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ce80efa4.css",
-    "static/js/main.eb99d3ed.js"
+    "static/js/main.bda360dc.js"
   ]
 }
