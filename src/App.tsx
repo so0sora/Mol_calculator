@@ -106,8 +106,8 @@ function App() {
           marginTop: 'auto',
           marginBottom: '12px'
         }}>
-          v1.0.0<br />
-          2025-06-09
+          v1.0.1<br />
+          2025-06-10
         </div>
       </div>
 
@@ -154,7 +154,8 @@ function App() {
                 계수: {amount !== null ? amount : '-'} / 단위: {unit || '-'}
               </div>
             )}
-            <button className="convert-btn" onClick={handleConvert} aria-label="변환">
+            {/*아래 방향 화살표*/}
+            <button className="convert-btn" onClick={handleConvert} aria-label="변환"> 
               <svg width="24" height="15" viewBox="0 0 24 24" fill="none">
                 <path d="M12 5v14M12 19l7-7M12 19l-7-7" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>

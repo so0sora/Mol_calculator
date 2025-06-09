@@ -17,7 +17,7 @@ interface ResultProps {
   unit?: string;
 }   
 
-const AVOGADRO = 6.02214076e23; // 아보가드로 수
+const AVOGADRO = 6.02; // 아보가드로 수
 
 // 분자 하나당 원자의 개수 계산 함수
 function getAtomCountPerMolecule(parsedAtoms: { symbol: string; count: number }[]) {
@@ -27,14 +27,26 @@ function getAtomCountPerMolecule(parsedAtoms: { symbol: string; count: number }[
 const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
   if (!parsedAtoms || parsedAtoms.length === 0) return null;
 
-  const formula = parsedAtoms
+  // 맨 앞에 계수(숫자)가 있는지 확인
+  let moleculeCount = 1;
+  let atomsForFormula = parsedAtoms;
+  if (
+    parsedAtoms.length > 0 &&
+    typeof parsedAtoms[0].symbol === 'string' &&
+    !isNaN(Number(parsedAtoms[0].symbol))
+  ) {
+    moleculeCount = Number(parsedAtoms[0].symbol);
+    atomsForFormula = parsedAtoms.slice(1);
+  }
+
+  const formula = atomsForFormula
     .map(atom => {
       const mass = atomData[atom.symbol]?.atomic_mass ?? 0;
       return `${atom.count}×${mass}`;
     })
     .join(' + ');
 
-  const total = parsedAtoms
+  const total = atomsForFormula
     .reduce(
       (sum, atom) =>
         sum + ((atomData[atom.symbol]?.atomic_mass ?? 0) * atom.count),
@@ -100,20 +112,29 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
     naToMol = amount / AVOGADRO;
     naToG = naToMol * total;
     naToL = naToMol * MOLAR_VOLUME;
-    naToAtomCount = amount * atomsPerMolecule;
+    naToAtomCount = amount * AVOGADRO * atomsPerMolecule;
   }
 
   return (
     <div style={{ marginTop: '16px', color: '#fff' }}>
-      {parsedAtoms.map((atom, idx) => (
+      {/* 원자 정보 출력 */}
+      {atomsForFormula.map((atom, idx) => (
         <div key={idx}>
-          {atom.symbol} {atom.count}개 ({atomData[atom.symbol]?.symbol ?? '-'} {atomData[atom.symbol]?.kor ?? '-'})
+          {atom.symbol}({atomData[atom.symbol]?.symbol ?? '-'} {atomData[atom.symbol]?.kor ?? '-'}) {atom.count}개
+          {moleculeCount > 1 ? ` × ${moleculeCount}` : ''}
+          {' '}
+          (원자량: {atomData[atom.symbol]?.atomic_mass ?? '-'}{moleculeCount > 1 ? ` × ${moleculeCount}` : ''})
         </div>
       ))}
       <div style={{ marginTop: '12px', fontWeight: 'bold' }}>
-        분자량(화학식량): {formula}
+        분자량(화학식량): 
+        {moleculeCount > 1
+          ? `${moleculeCount}(${atomsForFormula.map(atom => `${atom.count}×${atomData[atom.symbol]?.atomic_mass ?? 0}`).join(' + ')})`
+          : atomsForFormula.map(atom => `${atom.count}×${atomData[atom.symbol]?.atomic_mass ?? 0}`).join(' + ')}
         <br />
-        = {total.toFixed(3)}
+        = {moleculeCount > 1
+          ? `${moleculeCount}(${atomsForFormula.reduce((sum, atom) => sum + ((atomData[atom.symbol]?.atomic_mass ?? 0) * atom.count), 0).toFixed(3)}) = ${(atomsForFormula.reduce((sum, atom) => sum + ((atomData[atom.symbol]?.atomic_mass ?? 0) * atom.count), 0) * moleculeCount).toFixed(3)}`
+          : atomsForFormula.reduce((sum, atom) => sum + ((atomData[atom.symbol]?.atomic_mass ?? 0) * atom.count), 0).toFixed(3)}
         <br /><br />
       </div>
 
@@ -132,9 +153,9 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
           {amount}mol × 22.4L/mol = {molToL !== null ? molToL.toFixed(3) : '-'} L
           <br /><br />
           {/* 원자/분자 개수 */}
-          원자의 개수 계산: 몰 수(mol) × 분자 하나당 원자의 개수 × 아보가드로 수(6.022×10²³) = 총 원자 개수
+          원자의 개수 계산: 몰 수(mol) × 분자 하나당 원자의 개수 × 아보가드로 수(6.02×10²³) = 총 원자 개수
           <br />
-          {amount} × {atomsPerMolecule} × 6.022 × 10²³ = {molToAtomCount !== null && molToAtomCount.toLocaleString('fullwide', { useGrouping: true })}개
+          {amount} × {atomsPerMolecule} × 6.02 × 10²³ = {molToAtomCount !== null && molToAtomCount.toLocaleString('fullwide', { useGrouping: true })}개
         </div>
       )}
       {/* g, kg 입력 시: 몰, 부피(L), 원자/분자 개수 모두 출력 */}
@@ -152,9 +173,9 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
           {gToMol !== null ? gToMol.toFixed(4) : '-'} mol × 22.4L/mol = {gToL !== null ? gToL.toFixed(3) : '-'} L
           <br /><br />
           {/* 원자/분자 개수 */}
-          원자의 개수 계산: 몰 수(mol) × 분자 하나당 원자의 개수 × 아보가드로 수(6.022×10²³) = 총 원자 개수
+          원자의 개수 계산: 몰 수(mol) × 분자 하나당 원자의 개수 × 아보가드로 수(6.02×10²³) = 총 원자 개수
           <br />
-          {gToMol !== null ? `${gToMol.toFixed(4)} × ${atomsPerMolecule} × 6.022 × 10²³ = ${gToAtomCount !== null ? gToAtomCount.toLocaleString('fullwide', { useGrouping: true }) : '-'}` : '-'}개
+          {gToMol !== null ? `${gToMol.toFixed(4)} × ${atomsPerMolecule} × 6.02 × 10²³ = ${gToAtomCount !== null ? gToAtomCount.toLocaleString('fullwide', { useGrouping: true }) : '-'}` : '-'}개
         </div>
       )}
       {/* L 입력 시: 몰, 질량, 원자/분자 개수 모두 출력 */}
@@ -173,18 +194,18 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
           {lToMol !== null ? `${lToMol.toFixed(4)}mol × ${total.toFixed(3)}g/mol = ${lToG !== null ? lToG.toFixed(3) : '-'}` : '-'} g
           <br /><br />
           {/* 원자/분자 개수 */}
-          원자의 개수 계산: 몰 수(mol) × 분자 하나당 원자의 개수 × 아보가드로 수(6.022×10²³) = 총 원자 개수
+          원자의 개수 계산: 몰 수(mol) × 분자 하나당 원자의 개수 × 아보가드로 수(6.02×10²³) = 총 원자 개수
           <br />
-          {lToMol !== null ? `${lToMol.toFixed(4)} × ${atomsPerMolecule} × 6.022 × 10²³ = ${lToAtomCount !== null ? lToAtomCount.toLocaleString('fullwide', { useGrouping: true }) : '-'}` : '-'}개
+          {lToMol !== null ? `${lToMol.toFixed(4)} × ${atomsPerMolecule} × 6.02 × 10²³ = ${lToAtomCount !== null ? lToAtomCount.toLocaleString('fullwide', { useGrouping: true }) : '-'}` : '-'}개
         </div>
       )}
       {/* NA 입력 시: 몰, 질량, 부피(L), 원자수 모두 출력 */}
       {isNA && (
         <div style={{ marginTop: '12px', fontWeight: 'bold', color: '#ffb347' }}>
           {/* 몰 수 */}
-          몰 수 계산: 개수 ÷ 아보가드로 수(6.022×10²³) = 몰 수(mol)
+          몰 수 계산: 개수 ÷ 아보가드로 수(6.02×10²³) = 몰 수(mol)
           <br />
-          {amount} ÷ 6.022 × 10²³ = {naToMol !== null ? naToMol.toExponential(4) : '-'} mol
+          {amount} ÷ (6.02 × 10²³) = {naToMol !== null ? naToMol.toExponential(4) : '-'} mol
           <br /><br />
           {/* 질량 */}
           질량 계산: 몰 수(mol) × 1몰의 질량(g/mol) = 질량(g)
@@ -198,9 +219,9 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
           {naToMol !== null ? `${naToMol.toExponential(4)} mol × 22.4L/mol = ${naToL !== null ? naToL.toExponential(3) : '-'}` : '-'} L
           <br /><br />
           {/* 원자/분자 개수 */}
-          원자의 개수 계산: 개수 × 분자 하나당 원자의 개수 = 총 원자 개수
+          원자의 개수 계산: 계수 × 아보가드로 수(6.02×10²³) × 분자 하나당 원자의 개수 = 총 원자 개수
           <br />
-          {amount} × {atomsPerMolecule} = {naToAtomCount !== null ? naToAtomCount.toLocaleString('fullwide', { useGrouping: true }) : '-'}개
+          {amount} × (6.02×10²³) × {atomsPerMolecule} = {naToAtomCount !== null ? naToAtomCount.toLocaleString('fullwide', { useGrouping: true }) : '-'}개
         </div>
       )}
     </div>
