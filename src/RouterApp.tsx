@@ -263,7 +263,7 @@ function MainApp() {
 // 실제 라우팅 적용
 function RouterApp() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename='https://so0sora.github.io/mol_calculator'>
       <Routes>
         <Route path="/" element={<MainApp />} />
         <Route path="/help" element={<HelpPage />} />
