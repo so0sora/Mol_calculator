@@ -161,9 +161,9 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
           <br /><br />
           {/* 부피 */}
           (0℃, 1atm, 기체일 때)<br />
-          부피 계산: 몰 수(mol) × 1몰의 부피(22.4L/mol) = 부피(L)
+          부피 계산: 몰 수(mol) × 1몰의 부피(22.4L) = 부피(L)
           <br />
-          {amount}mol × 22.4L/mol = {molToL !== null ? molToL.toFixed(3) : '-'} L
+          {amount}mol × 22.4L = {molToL !== null ? molToL.toFixed(3) : '-'} L
           <br /><br />
           {/* 원자/분자 개수 */}
           원자의 개수 계산: 몰 수(mol) × 분자 하나당 원자의 개수 × 아보가드로 수(6.02×10²³) = 총 원자 개수
@@ -181,9 +181,9 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
           <br /><br />
           {/* 부피 */}
           (0℃, 1atm, 기체일 때)<br />
-          부피 계산: 몰 수(mol) × 1몰의 부피(22.4L/mol) = 부피(L)
+          부피 계산: 몰 수(mol) × 1몰의 부피(22.4L) = 부피(L)
           <br />
-          {gToMol !== null ? gToMol.toFixed(4) : '-'} mol × 22.4L/mol = {gToL !== null ? gToL.toFixed(3) : '-'} L
+          {gToMol !== null ? gToMol.toFixed(4) : '-'} mol × 22.4L = {gToL !== null ? gToL.toFixed(3) : '-'} L
           <br /><br />
           {/* 원자/분자 개수 */}
           원자의 개수 계산: 몰 수(mol) × 분자 하나당 원자의 개수 × 아보가드로 수(6.02×10²³) = 총 원자 개수
@@ -197,9 +197,9 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
           (0℃, 1atm, 기체일 때)
           <br />
           {/* 몰 수 */}
-          몰 수 계산: 부피(L) ÷ 1몰의 부피(22.4L/mol) = 몰 수(mol)
+          몰 수 계산: 부피(L) ÷ 1몰의 부피(22.4L) = 몰 수(mol)
           <br />
-          {amount}L ÷ 22.4L/mol = {lToMol !== null ? lToMol.toFixed(4) : '-'} mol
+          {amount}L ÷ 22.4L = {lToMol !== null ? lToMol.toFixed(4) : '-'} mol
           <br /><br />
           {/* 질량 */}
           질량 계산: 몰 수(mol) × 1몰의 질량(g/mol) = 질량(g)
@@ -227,9 +227,9 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
           <br /><br />
           {/* 부피 */}
           (0℃, 1atm, 기체일 때)<br />
-          부피 계산: 몰 수(mol) × 1몰의 부피(22.4L/mol) = 부피(L)
+          부피 계산: 몰 수(mol) × 1몰의 부피(22.4L) = 부피(L)
           <br />
-          {naToMol !== null ? `${naToMol.toExponential(4)} mol × 22.4L/mol = ${naToL !== null ? naToL.toExponential(3) : '-'}` : '-'} L
+          {naToMol !== null ? `${naToMol.toExponential(4)} mol × 22.4L = ${naToL !== null ? naToL.toExponential(3) : '-'}` : '-'} L
           <br /><br />
           {/* 원자/분자 개수 */}
           원자의 개수 계산: 계수 × 아보가드로 수(6.02×10²³) × 분자 하나당 원자의 개수 = 총 원자 개수
@@ -243,9 +243,9 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
           (0℃, 1atm, 기체일 때)
           <br />
           {/* 몰 수 */}
-          몰 수 계산: 부피({amount / 1000}L) ÷ 1몰의 부피(22.4L/mol) = 몰 수(mol)
+          몰 수 계산: 부피({amount / 1000}L) ÷ 1몰의 부피(22.4L) = 몰 수(mol)
           <br />
-          {amount / 1000}L ÷ 22.4L/mol = {mlToMol !== null ? mlToMol.toFixed(4) : '-'} mol
+          {amount / 1000}L ÷ 22.4L = {mlToMol !== null ? mlToMol.toFixed(4) : '-'} mol
           <br /><br />
           {/* 질량 */}
           질량 계산: 몰 수(mol) × 1몰의 질량(g/mol) = 질량(g)

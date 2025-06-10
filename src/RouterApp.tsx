@@ -17,17 +17,13 @@ const atomData: AtomDataType = atomDataJson as AtomDataType;
 // help 페이지 컴포넌트
 function HelpPage() {
   // 지원하는 원소 목록 추출
-const atomList = Object.entries(atomData).map(
-    ([symbol, data]: [string, any]) => {
-        // kor 필드가 있으면 kor, 없으면 symbol
-        const kor = data.kor || data.symbol;
-        return `${symbol} (${kor})`;
-    }
-);
+  const atomList = Object.entries(atomData).map(
+    ([symbol, data]) => `${symbol} (${data.symbol})`
+  );
 
-  // 출력할 지원하는 단위 목록
+  // 지원하는 단위 목록
   const unitList = [
-    '몰: mol, mole, 몰', '질량: g, kg', '부피: L, mL', 'g/mol', 'L/mol', 'NA'
+    '몰: mol, mole, 몰', '질량: g, kg', '부피: L, mL', 'NA'
   ];
 
   return (
@@ -36,22 +32,29 @@ const atomList = Object.entries(atomData).map(
         background: '#222',
         color: '#fff',
         minHeight: '100vh',
-        padding: 32,
+        padding: 0,
       }}
     >
-      <h1>도움말</h1>
-      <h2>사용법</h2>
-      <p>첫 텍스트 박스에 분자식(화학식)을 입력하면 분자량(화학식량)을 구할 수 있고</p>
-      <h2>지원하는 원소</h2>
-      <div style={{ maxHeight: 200, overflowY: 'auto', background: '#191919', padding: 12, borderRadius: 8, fontSize: 15 }}>
-        {atomList.join(', ')}
+      {/* 메인과 동일한 헤더 */}
+      <div className="header">
+        <span className="header-title">mol_calculator</span>
       </div>
-      <h2 style={{ marginTop: 24 }}>지원하는 단위</h2>
-      <div style={{ background: '#191919', padding: 12, borderRadius: 8, fontSize: 15 }}>
-        {/* 모든 요소 출력 */}
-        {unitList.map((unit, i) => (
-          <div key={i}>{unit}</div>
-        ))}
+      <div style={{ padding: 32, paddingTop: 80 }}>
+        <h2>사용법</h2>
+        <p>첫 번째 텍스트 박스에 분자식(화학식)을 입력하면 분자량(화학식량)을 구할 수 있다.</p>
+        <p>아래 첨자로 변환하기 버튼을 클릭하면 첫 번쨰 텍스트 박스에 입력된 마지막 숫자가 아래 첨자로 바뀐다.</p>
+        <p>그 옆의 ALL 버튼을 클릭하면 입력된 모든 숫자가 아래 첨자로 바뀐다.</p>
+        <p>두 번째 텍스트 박스에 값과 단위를 입력하면 계산 결과가 출력된다.</p>
+        <h2>지원하는 원소</h2>
+        <div style={{ maxHeight: 200, overflowY: 'auto', background: '#191919', padding: 12, borderRadius: 8, fontSize: 15 }}>
+          {atomList.join(', ')}
+        </div>
+        <h2 style={{ marginTop: 24 }}>지원하는 단위</h2>
+        <div style={{ background: '#191919', padding: 12, borderRadius: 8, fontSize: 15 }}>
+          {unitList.map((unit, i) => (
+            <div key={i}>{unit}</div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -83,8 +86,7 @@ function MainApp() {
   const handleConvert = () => {
     setError(null);
 
-    // 'mL' 단위도 허용
-    const allowedUnits = ['몰','mole', 'mol', 'g', 'kg', 'L', 'mL', 'g/mol', 'L/mol', 'NA'];
+    const allowedUnits = ['몰','mole', 'mol', 'g', 'kg', 'L', 'mL', 'NA'];
     if (unit && !allowedUnits.includes(unit)) {
       setParsedAtoms([]);
       setError(`지원되지 않는 단위입니다: ${unit}`);

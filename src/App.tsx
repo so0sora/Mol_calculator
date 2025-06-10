@@ -123,7 +123,7 @@ function App() {
           //marginTop: 'auto',
           marginBottom: 'auto'
         }}>
-          v1.0.1<br />
+          v1.0.2<br />
           Update: 2025-06-10
         </div>
       </div>
@@ -156,7 +156,7 @@ function App() {
                 className="subscript-btn all"
                 onClick={() => setInputValue(SubscriptConverter.toSubscriptAll(inputValue))}
               >
-                All
+                ALL
               </button>
             </div>
             <input
@@ -168,7 +168,7 @@ function App() {
             />
             {inputValue2 && (
               <div style={{ marginTop: '12px', color: '#fff' }}>
-                계수: {amount !== null ? amount : '-'} / 단위: {unit || '-'}
+                값: {amount !== null ? amount : '-'} / 단위: {unit || '-'}
               </div>
             )}
             {/*아래 방향 화살표*/}
