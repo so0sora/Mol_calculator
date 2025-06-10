@@ -9,7 +9,7 @@
   },
   "name": "mol_calculator",
   "version": "0.1.0",
-  "homepage": "https://so0sora.github.io/mol_calculator/",
+  "homepage": "https://so0sora.github.io/mol_calculator",
   "script": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
