@@ -236,7 +236,7 @@ function MainApp() {
               <div style={{ marginTop: '12px', color: '#fff' }}>
                 값: {amount !== null ? amount : '-'} / 단위: {unit || '-'}
               </div>
-            )}
+            )}  
             {/*아래 방향 화살표*/}
             <button className="convert-btn" onClick={handleConvert} aria-label="변환"> 
               <svg width="24" height="15" viewBox="0 0 24 24" fill="none">

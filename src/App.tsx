@@ -159,6 +159,7 @@ function App() {
                 ALL
               </button>
             </div>
+            {/* 텍스트 박스*/}
             <input
               type="text"
               className="text-input"
