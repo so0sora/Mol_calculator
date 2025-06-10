@@ -17,7 +17,7 @@ interface ResultProps {
   unit?: string;
 }   
 
-const AVOGADRO = 6.02; // 아보가드로 수
+const AVOGADRO = 6.02 * 10**23; // 아보가드로 수
 
 // 분자 하나당 원자의 개수 계산 함수
 function getAtomCountPerMolecule(parsedAtoms: { symbol: string; count: number }[]) {
@@ -56,12 +56,13 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
   // 분자 하나당 원자의 개수
   const atomsPerMolecule = getAtomCountPerMolecule(parsedAtoms);
 
-  // 단위별 계산
+  // 단위별 계산 (단위가 허용되는지 and 양이 0보다 큰지)
   const isKg = unit === 'kg' && amount && total > 0;
   const isG = unit === 'g' && amount && total > 0;
-  const isMol = unit === 'mol' && amount && total > 0;
-  const isL = unit === 'L' && amount && total > 0;
-  const isNA = unit === 'NA' && amount && total > 0;
+  const isMol = (unit === 'mol' || unit === '몰' || unit === 'mole' || unit === 'MOL') && amount && total > 0;
+  const isL = (unit === 'L' || unit === '리터') && amount && total > 0;
+  const ismL = (unit === 'mL' || unit === '밀리리터') && amount && total > 0;
+  const isNA = (unit === 'NA') && amount && total > 0;
   const amountInG = isKg ? amount * 1000 : amount;
 
   // 0도씨 1기압에서 1mol 기체의 부피(L)
@@ -115,15 +116,27 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
     naToAtomCount = amount * AVOGADRO * atomsPerMolecule;
   }
 
+  // mL → mol, g, 원자수 계산
+  let mlToMol = null;
+  let mlToG = null;
+  let mlToAtomCount = null;
+  if (ismL && amount) {
+    const lAmount = amount / 1000; // mL → L 변환
+    mlToMol = lAmount / MOLAR_VOLUME;
+    mlToG = mlToMol * total;
+    mlToAtomCount = mlToMol * atomsPerMolecule * AVOGADRO;
+  }
+
   return (
     <div style={{ marginTop: '16px', color: '#fff' }}>
       {/* 원자 정보 출력 */}
       {atomsForFormula.map((atom, idx) => (
         <div key={idx}>
-          {atom.symbol}({atomData[atom.symbol]?.symbol ?? '-'} {atomData[atom.symbol]?.kor ?? '-'}) {atom.count}개
-          {moleculeCount > 1 ? ` × ${moleculeCount}` : ''}
-          {' '}
-          (원자량: {atomData[atom.symbol]?.atomic_mass ?? '-'}{moleculeCount > 1 ? ` × ${moleculeCount}` : ''})
+          {atom.symbol}(
+      {atomData[atom.symbol]?.symbol ?? '-'} {atomData[atom.symbol]?.kor ?? '-'}.
+      원자량: {atomData[atom.symbol]?.atomic_mass ?? '-'}
+    ) {atom.count * moleculeCount}개
+    {moleculeCount > 1 ? ` (${atom.count}개 × ${moleculeCount})` : ''}
         </div>
       ))}
       <div style={{ marginTop: '12px', fontWeight: 'bold' }}>
@@ -160,7 +173,7 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
       )}
       {/* g, kg 입력 시: 몰, 부피(L), 원자/분자 개수 모두 출력 */}
       {(isG || isKg) && (
-        <div style={{ marginTop: '12px', fontWeight: 'bold', color: isKg ? '#ffe082' : '#b2ffb2' }}>
+        <div style={{ marginTop: '12px', fontWeight: 'bold', color: '#ffe082' }}>
           {/* 몰 수 */}
           몰 수 계산: 질량(g) ÷ 1몰의 질량(g/mol) = 몰 수(mol)
           <br />
@@ -222,6 +235,27 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
           원자의 개수 계산: 계수 × 아보가드로 수(6.02×10²³) × 분자 하나당 원자의 개수 = 총 원자 개수
           <br />
           {amount} × (6.02×10²³) × {atomsPerMolecule} = {naToAtomCount !== null ? naToAtomCount.toLocaleString('fullwide', { useGrouping: true }) : '-'}개
+        </div>
+      )}
+      {/* mL 입력 시: 몰, 질량, 원자/분자 개수 모두 출력 */}
+      {ismL && (
+        <div style={{ marginTop: '12px', fontWeight: 'bold', color: '#ffd1dc' }}>
+          (0℃, 1atm, 기체일 때)
+          <br />
+          {/* 몰 수 */}
+          몰 수 계산: 부피({amount / 1000}L) ÷ 1몰의 부피(22.4L/mol) = 몰 수(mol)
+          <br />
+          {amount / 1000}L ÷ 22.4L/mol = {mlToMol !== null ? mlToMol.toFixed(4) : '-'} mol
+          <br /><br />
+          {/* 질량 */}
+          질량 계산: 몰 수(mol) × 1몰의 질량(g/mol) = 질량(g)
+          <br />
+          {mlToMol !== null ? `${mlToMol.toFixed(4)}mol × ${total.toFixed(3)}g/mol = ${mlToG !== null ? mlToG.toFixed(3) : '-'}` : '-'} g
+          <br /><br />
+          {/* 원자/분자 개수 */}
+          원자의 개수 계산: 몰 수(mol) × 분자 하나당 원자의 개수 × 아보가드로 수(6.02×10²³) = 총 원자 개수
+          <br />
+          {mlToMol !== null ? `${mlToMol.toFixed(4)} × ${atomsPerMolecule} × 6.02 × 10²³ = ${mlToAtomCount !== null ? mlToAtomCount.toLocaleString('fullwide', { useGrouping: true }) : '-'}` : '-'}개
         </div>
       )}
     </div>

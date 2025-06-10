@@ -141,6 +141,20 @@
   transform: rotate(-45deg);
 }
 
+.help-btn {
+  width: 80px;
+  padding: 10px 14px;
+  font-size: 12px;
+  border-radius: 6px;
+  border: none;
+  background: #ffffff;
+  color: #000000;
+  cursor: pointer;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  transition: background 0.2s;
+}
+
 .side-menu-list {
   list-style: none;
   padding: 0;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
 import { Calculate, SubscriptConverter } from './ExtraFunction';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import atomDataJson from './atom.json';
 import Result from './Result';
 
@@ -14,20 +14,66 @@ type AtomDataType = {
 
 const atomData: AtomDataType = atomDataJson as AtomDataType;
 
-function App() {
+// help 페이지 컴포넌트
+function HelpPage() {
+  // 지원하는 원소 목록 추출
+const atomList = Object.entries(atomData).map(
+    ([symbol, data]: [string, any]) => {
+        // kor 필드가 있으면 kor, 없으면 symbol
+        const kor = data.kor || data.symbol;
+        return `${symbol} (${kor})`;
+    }
+);
+
+  // 출력할 지원하는 단위 목록
+  const unitList = [
+    '몰: mol, mole, 몰', '질량: g, kg', '부피: L, mL', 'g/mol', 'L/mol', 'NA'
+  ];
+
+  return (
+    <div
+      style={{
+        background: '#222',
+        color: '#fff',
+        minHeight: '100vh',
+        padding: 32,
+      }}
+    >
+      <h1>도움말</h1>
+      <h2>사용법</h2>
+      <p>첫 텍스트 박스에 분자식(화학식)을 입력하면 분자량(화학식량)을 구할 수 있고</p>
+      <h2>지원하는 원소</h2>
+      <div style={{ maxHeight: 200, overflowY: 'auto', background: '#191919', padding: 12, borderRadius: 8, fontSize: 15 }}>
+        {atomList.join(', ')}
+      </div>
+      <h2 style={{ marginTop: 24 }}>지원하는 단위</h2>
+      <div style={{ background: '#191919', padding: 12, borderRadius: 8, fontSize: 15 }}>
+        {/* 모든 요소 출력 */}
+        {unitList.map((unit, i) => (
+          <div key={i}>{unit}</div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// 메인 앱 컴포넌트
+function MainApp() {
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
-  //const []
   const [inputValue, setInputValue] = useState('');
   const [inputValue2, setInputValue2] = useState('');
   const [parsedAtoms, setParsedAtoms] = useState<{ symbol: string, count: number }[]>([]);
   const [error, setError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   const handleMenuClick = () => {
     setSideMenuOpen(!sideMenuOpen);
   };
 
   const handleHelpMenuClick = () => {
-    
+    navigate('/help');
+    setSideMenuOpen(false);
   };
 
   const handleSubscript = () => {
@@ -37,7 +83,8 @@ function App() {
   const handleConvert = () => {
     setError(null);
 
-    const allowedUnits = ['mol', 'mole', 'MOL', 'g', 'kg', 'L', 'mL', 'g/mol', 'L/mol', 'NA'];
+    // 'mL' 단위도 허용
+    const allowedUnits = ['몰','mole', 'mol', 'g', 'kg', 'L', 'mL', 'g/mol', 'L/mol', 'NA'];
     if (unit && !allowedUnits.includes(unit)) {
       setParsedAtoms([]);
       setError(`지원되지 않는 단위입니다: ${unit}`);
@@ -105,7 +152,7 @@ function App() {
 
           {/* help 버튼 */}
           <button
-            onClick={() => { window.location.href = '/help'; handleHelpMenuClick()}} /* help 페이지로 이동 */
+            onClick={handleHelpMenuClick}
             className="help-btn"
             aria-label="도움말"
           >
@@ -120,11 +167,11 @@ function App() {
           fontSize: '11px',
           color: '#bbb',
           textAlign: 'center',
-          //marginTop: 'auto',
-          marginBottom: 'auto'
+          marginTop: 'auto',
+          marginBottom: '12px'
         }}>
           v1.0.1<br />
-          Update: 2025-06-10
+          2025-06-10
         </div>
       </div>
 
@@ -194,4 +241,17 @@ function App() {
   );
 }
 
-export default App;
+// 실제 라우팅 적용
+function RouterApp() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainApp />} />
+        <Route path="/help" element={<HelpPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default RouterApp;
+
