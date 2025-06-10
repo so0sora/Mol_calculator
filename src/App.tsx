@@ -27,7 +27,7 @@ function App() {
   };
 
   const handleHelpMenuClick = () => {
-    
+    window.location.href = '/help';
   };
 
   const handleSubscript = () => {
@@ -37,7 +37,7 @@ function App() {
   const handleConvert = () => {
     setError(null);
 
-    const allowedUnits = ['mol', 'mole', 'MOL', 'g', 'kg', 'L', 'mL', 'g/mol', 'L/mol', 'NA'];
+    const allowedUnits = ['mol', 'mole', 'MOL', '몰', 'g', 'kg', 'L', 'mL', 'g/mol', 'L/mol', 'NA'];
     if (unit && !allowedUnits.includes(unit)) {
       setParsedAtoms([]);
       setError(`지원되지 않는 단위입니다: ${unit}`);
@@ -105,7 +105,7 @@ function App() {
 
           {/* help 버튼 */}
           <button
-            onClick={() => { window.location.href = '/help'; handleHelpMenuClick()}} /* help 페이지로 이동 */
+            onClick={() => {handleHelpMenuClick()}} /* help 페이지로 이동 */
             className="help-btn"
             aria-label="도움말"
           >

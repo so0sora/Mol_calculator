@@ -9,6 +9,7 @@ type AtomDataType = {
   [key: string]: {
     symbol: string;
     atomic_mass: number;
+    kor?: string; // 한글 명 필드 추가 (옵셔널)
   };
 };
 
@@ -16,14 +17,17 @@ const atomData: AtomDataType = atomDataJson as AtomDataType;
 
 // help 페이지 컴포넌트
 function HelpPage() {
-  // 지원하는 원소 목록 추출
+  const navigate = useNavigate();
+
+  // 지원하는 원소 목록 추출 (한글 이름 포함)
   const atomList = Object.entries(atomData).map(
-    ([symbol, data]) => `${symbol} (${data.symbol})`
+    ([symbol, data]) =>
+      `${symbol} (${data.symbol}${data.kor ? ', ' + data.kor : ''})`
   );
 
   // 지원하는 단위 목록
   const unitList = [
-    '몰: mol, mole, 몰', '질량: g, kg', '부피: L, mL', 'NA'
+    '몰: mol, MOL, mole, 몰', '질량: g, kg', '부피: L, mL', 'NA'
   ];
 
   return (
@@ -35,8 +39,19 @@ function HelpPage() {
         padding: 0,
       }}
     >
-      {/* 메인과 동일한 헤더 */}
+      {/* 헤더 + 뒤로가기 버튼 */}
       <div className="header">
+        <button
+          className="menu-btn"
+          style={{ marginLeft: 16 }}
+          aria-label="뒤로가기"
+          onClick={() => navigate(-1)}
+        >
+          {/* ← 아이콘(뒤로가기 버튼의의) */}
+          <svg width="28" height="28" viewBox="0 0 28 28">
+            <polyline points="18,6 10,14 18,22" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
         <span className="header-title">mol_calculator</span>
       </div>
       <div style={{ padding: 32, paddingTop: 80 }}>
@@ -44,10 +59,12 @@ function HelpPage() {
         <p>첫 번째 텍스트 박스에 분자식(화학식)을 입력하면 분자량(화학식량)을 구할 수 있다.</p>
         <p>아래 첨자로 변환하기 버튼을 클릭하면 첫 번쨰 텍스트 박스에 입력된 마지막 숫자가 아래 첨자로 바뀐다.</p>
         <p>그 옆의 ALL 버튼을 클릭하면 입력된 모든 숫자가 아래 첨자로 바뀐다.</p>
-        <p>두 번째 텍스트 박스에 값과 단위를 입력하면 계산 결과가 출력된다.</p>
+        <p>두 번째 텍스트 박스에 값과 단위를 입력하면 다른 여러 단위로 변환한 계산 결과가 출력된다.</p>
         <h2>지원하는 원소</h2>
         <div style={{ maxHeight: 200, overflowY: 'auto', background: '#191919', padding: 12, borderRadius: 8, fontSize: 15 }}>
-          {atomList.join(', ')}
+          {atomList.map((atom, i) => (
+            <div key={i}>{atom}</div>
+          ))}
         </div>
         <h2 style={{ marginTop: 24 }}>지원하는 단위</h2>
         <div style={{ background: '#191919', padding: 12, borderRadius: 8, fontSize: 15 }}>
@@ -205,7 +222,7 @@ function MainApp() {
                 className="subscript-btn all"
                 onClick={() => setInputValue(SubscriptConverter.toSubscriptAll(inputValue))}
               >
-                All
+                ALL
               </button>
             </div>
             <input
@@ -217,7 +234,7 @@ function MainApp() {
             />
             {inputValue2 && (
               <div style={{ marginTop: '12px', color: '#fff' }}>
-                계수: {amount !== null ? amount : '-'} / 단위: {unit || '-'}
+                값: {amount !== null ? amount : '-'} / 단위: {unit || '-'}
               </div>
             )}
             {/*아래 방향 화살표*/}
