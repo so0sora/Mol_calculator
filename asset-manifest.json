@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/mol_calculator/static/css/main.90d89499.css",
-    "main.js": "/mol_calculator/static/js/main.5cab4050.js",
+    "main.js": "/mol_calculator/static/js/main.5f7a9e5c.js",
     "index.html": "/mol_calculator/index.html",
     "main.90d89499.css.map": "/mol_calculator/static/css/main.90d89499.css.map",
-    "main.5cab4050.js.map": "/mol_calculator/static/js/main.5cab4050.js.map"
+    "main.5f7a9e5c.js.map": "/mol_calculator/static/js/main.5f7a9e5c.js.map"
   },
   "entrypoints": [
     "static/css/main.90d89499.css",
-    "static/js/main.5cab4050.js"
+    "static/js/main.5f7a9e5c.js"
   ]
 }
