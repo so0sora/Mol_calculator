@@ -4,7 +4,7 @@ import atomDataJson from './atom.json';
 type AtomDataType = {
   [key: string]: {
     symbol: string; //영어 명
-    kor: string; //한글 명
+    kor?: string; //한글 명
     atomic_mass: number; //원자량
   };
 };
@@ -110,7 +110,8 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
   let naToL = null;
   let naToAtomCount = null;
   if (isNA && amount) {
-    naToMol = amount / AVOGADRO;
+    // 분자 하나당 원자의 개수 반영
+    naToMol = amount * atomsPerMolecule; // ÷ AVOGADRO 제거
     naToG = naToMol * total;
     naToL = naToMol * MOLAR_VOLUME;
     naToAtomCount = amount * AVOGADRO * atomsPerMolecule;
@@ -212,27 +213,28 @@ const Result: React.FC<ResultProps> = ({ parsedAtoms, amount, unit }) => {
       {isNA && (
         <div style={{ marginTop: '12px', fontWeight: 'bold', color: '#ffb347' }}>
           {/* 몰 수 */}
-          몰 수 계산: 개수 ÷ 아보가드로 수(6.02×10²³) = 몰 수(mol)
+          몰 수 계산: 계수 × 분자 하나당 원자의 개수 = 몰 수(mol)
           <br />
-          {amount} ÷ (6.02 × 10²³) = {naToMol !== null ? naToMol.toExponential(4) : '-'} mol
+          {amount} × {atomsPerMolecule} = {naToMol !== null ? Number(naToMol).toLocaleString(undefined, { maximumFractionDigits: 4 }) : '-'} mol
           <br /><br />
           {/* 질량 */}
           질량 계산: 몰 수(mol) × 1몰의 질량(g/mol) = 질량(g)
           <br />
-          {naToMol !== null ? `${naToMol.toExponential(4)} mol × ${total.toFixed(3)}g/mol = ${naToG !== null ? naToG.toFixed(3) : '-'}` : '-'} g
+          {naToMol !== null ? `${Number(naToMol).toLocaleString(undefined, { maximumFractionDigits: 4 })} mol × ${total.toFixed(3)}g/mol = ${naToG !== null ? naToG.toFixed(3) : '-'}` : '-'} g
           <br /><br />
           {/* 부피 */}
           (0℃, 1atm, 기체일 때)<br />
           부피 계산: 몰 수(mol) × 1몰의 부피(22.4L) = 부피(L)
           <br />
-          {naToMol !== null ? `${naToMol.toExponential(4)} mol × 22.4L = ${naToL !== null ? naToL.toExponential(3) : '-'}` : '-'} L
+          {naToMol !== null ? `${Number(naToMol).toLocaleString(undefined, { maximumFractionDigits: 4 })} mol × 22.4L = ${naToL !== null ? naToL.toFixed(3) : '-'}` : '-'} L
           <br /><br />
-          {/* 원자/분자 개수 */}
-          원자의 개수 계산: 계수 × 분자 하나당 원자의 개수 × 아보가드로 수(6.02×10²³) = 총 원자 개수
-          <br />
-          {amount && atomsPerMolecule
+          {/* 총 원자의 개수 */}
+          총 원자의 개수: 입력한 NA의 계수 × 분자 하나당 원자의 개수 × 아보가드로 수 = {amount && atomsPerMolecule
             ? `${amount} × ${atomsPerMolecule} × 6.02 × 10²³ = ${(Number(amount) * atomsPerMolecule * 6.02).toFixed(2)} × 10²³`
             : '-'}개
+          <br />
+          {/* 입력한 NA의 계수 × 아보가드로 수 */}
+          입력한 NA의 계수 × 아보가드로 수 = {amount ? `${amount} × 6.02 × 10²³ = ${(Number(amount) * 6.02).toFixed(2)} × 10²³` : '-'}
         </div>
       )}
       {/* mL 입력 시: 몰, 질량, 원자/분자 개수 모두 출력 */}  

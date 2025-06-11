@@ -7,9 +7,9 @@ import Result from './Result';
 
 type AtomDataType = {
   [key: string]: {
-    symbol: string;
-    atomic_mass: number;
-    kor?: string; // 한글 명 필드 추가 (옵셔널)
+    symbol: string; //영어 명
+    kor?: string; //한글 명
+    atomic_mass: number; //원자량
   };
 };
 
@@ -59,7 +59,9 @@ function HelpPage() {
         <p>첫 번째 텍스트 박스에 분자식(화학식)을 입력하면 분자량(화학식량)을 구할 수 있다.</p>
         <p>아래 첨자로 변환하기 버튼을 클릭하면 첫 번쨰 텍스트 박스에 입력된 마지막 숫자가 아래 첨자로 바뀐다.</p>
         <p>그 옆의 ALL 버튼을 클릭하면 입력된 모든 숫자가 아래 첨자로 바뀐다.</p>
-        <p>두 번째 텍스트 박스에 값과 단위를 입력하면 다른 여러 단위로 변환한 계산 결과가 출력된다.</p>
+        <p>아래 첨자를 이용하여 분자식(화학식)의 원자의 개수를 조절할 수 있다.</p>
+        <p>두 번째 텍스트 박스에 값과 지원하는 단위를 입력하면 다른 여러 단위로 변환한 계산 결과가 출력된다.</p>
+        <br/>
         <h2>지원하는 원소</h2>
         <div style={{ maxHeight: 200, overflowY: 'auto', background: '#191919', padding: 12, borderRadius: 8, fontSize: 15 }}>
           {atomList.map((atom, i) => (
@@ -189,8 +191,8 @@ function MainApp() {
           marginTop: 'auto',
           marginBottom: '12px'
         }}>
-          v1.0.1<br />
-          2025-06-10
+          v1.0.2<br />
+          2025-06-11
         </div>
       </div>
 
